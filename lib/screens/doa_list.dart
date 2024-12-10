@@ -90,7 +90,7 @@ Future<void> fetchDuas() async {
                 ),
               ),
               TextSpan(
-                text: "by: Aditiya FA",
+                text: "mobile",
                 style: TextStyle(
                   color: Colors.purple[200],
                   fontSize: 12,
