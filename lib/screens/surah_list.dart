@@ -16,7 +16,7 @@ class QuranApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Al-Quran App',
+      title: 'QuranNow',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.blueGrey.shade50,
@@ -127,7 +127,7 @@ class _SurahListPageState extends State<SurahListPage> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: "Al-Qur'an digital\n",
+                text: "Qur'anNow\n",
                 style: TextStyle(
                   color: Colors.blueGrey.shade900,
                   fontWeight: FontWeight.bold,
@@ -164,7 +164,8 @@ class _SurahListPageState extends State<SurahListPage> {
             padding: const EdgeInsets.all(10.0),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(color: Colors.blueGrey.shade900, fontWeight: FontWeight.w300),
+              style: TextStyle(
+                  color: Colors.blueGrey.shade900, fontWeight: FontWeight.w300),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.blueGrey.shade50,
@@ -173,7 +174,8 @@ class _SurahListPageState extends State<SurahListPage> {
                 prefixIcon: Icon(Icons.search, color: Colors.blueGrey.shade600),
                 suffixIcon: _isSearching
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.blueGrey.shade600),
+                        icon:
+                            Icon(Icons.clear, color: Colors.blueGrey.shade600),
                         onPressed: _clearSearch,
                       )
                     : null,
@@ -183,7 +185,8 @@ class _SurahListPageState extends State<SurahListPage> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.blueGrey.shade300, width: 1.5),
+                  borderSide:
+                      BorderSide(color: Colors.blueGrey.shade300, width: 1.5),
                 ),
               ),
               onChanged: _filterSurahs,
@@ -195,7 +198,8 @@ class _SurahListPageState extends State<SurahListPage> {
             child: isLoading
                 ? Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey.shade300),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.blueGrey.shade300),
                     ),
                   )
                 : errorMessage.isNotEmpty
@@ -213,7 +217,9 @@ class _SurahListPageState extends State<SurahListPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blueGrey.shade200,
                               ),
-                              child: Text('Coba Lagi', style: TextStyle(color: Colors.blueGrey.shade900)),
+                              child: Text('Coba Lagi',
+                                  style: TextStyle(
+                                      color: Colors.blueGrey.shade900)),
                             ),
                           ],
                         ),

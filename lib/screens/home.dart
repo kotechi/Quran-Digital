@@ -16,7 +16,7 @@ class QuranApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Al-Quran App',
+      title: 'QursnNow',
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.black,
@@ -64,7 +64,8 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> _checkPermission() async {
-    bool isGranted = await LocationPermissionHandler.handleLocationPermission(context);
+    bool isGranted =
+        await LocationPermissionHandler.handleLocationPermission(context);
 
     setState(() {
       _isPermissionGranted = isGranted;
@@ -103,10 +104,11 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "Al-Qur'an Digital",
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontSize: 28,
-                      ),
+                      "Qur'anNow",
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontSize: 28,
+                              ),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
@@ -136,22 +138,25 @@ class _LandingPageState extends State<LandingPage> {
                 Text(
                   'Powered by :',
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                        .withOpacity(0.6),
                     fontSize: 15,
                   ),
                 ),
 
-                                Text(
+                Text(
                   'Pengembangan Perangkat Lunak & Gim',
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                        .withOpacity(0.6),
                     fontSize: 15,
                   ),
                 ),
-                                Text(
+                Text(
                   'SMKN 1 Ciomas',
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                        .withOpacity(0.6),
                     fontSize: 15,
                   ),
                 ),
@@ -159,7 +164,8 @@ class _LandingPageState extends State<LandingPage> {
                 Text(
                   'Version 1.0.0',
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    color: const Color.fromARGB(255, 255, 255, 255)
+                        .withOpacity(0.6),
                     fontSize: 12,
                   ),
                 ),
@@ -199,7 +205,8 @@ class _LandingPageState extends State<LandingPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                 foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -220,10 +227,11 @@ class _LandingPageState extends State<LandingPage> {
       builder: (_, AsyncSnapshot<bool?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)),
+            valueColor: AlwaysStoppedAnimation<Color>(
+                const Color.fromARGB(255, 255, 255, 255)),
           );
         }
-        
+
         if (snapshot.hasError || (snapshot.data != true)) {
           return Text(
             "Sensor tidak mendukung arah kiblat",
@@ -245,7 +253,8 @@ class _LandingPageState extends State<LandingPage> {
             ),
             boxShadow: [
               BoxShadow(
-                color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.3),
+                color:
+                    const Color.fromARGB(255, 255, 255, 255).withOpacity(0.3),
                 blurRadius: 20,
                 spreadRadius: 2,
                 offset: const Offset(0, 6),
@@ -263,7 +272,7 @@ class _LandingPageState extends State<LandingPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildNavButton(
-          context, 
+          context,
           icon: Icons.auto_stories,
           label: 'Baca Surat',
           onPressed: () => Navigator.push(
@@ -310,8 +319,8 @@ class _LandingPageState extends State<LandingPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            icon, 
-            size: 24, 
+            icon,
+            size: 24,
             color: const Color.fromARGB(255, 255, 255, 255),
           ),
           const SizedBox(width: 10),
@@ -359,23 +368,22 @@ class _QiblahCompassState extends State<QiblahCompass> {
       builder: (context, AsyncSnapshot<QiblahDirection> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)),
-            )
-          );
+              child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(
+                const Color.fromARGB(255, 255, 255, 255)),
+          ));
         }
 
         if (snapshot.hasError) {
           return Center(
-            child: Text(
-              'Error: ${snapshot.error}', 
-              style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
-            )
-          );
+              child: Text(
+            'Error: ${snapshot.error}',
+            style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+          ));
         }
 
         final qiblahDirection = snapshot.data!;
-        
+
         return Transform.rotate(
           angle: (qiblahDirection.qiblah * (pi / 180) * -1),
           child: SvgPicture.asset(
@@ -383,9 +391,7 @@ class _QiblahCompassState extends State<QiblahCompass> {
             width: 200,
             height: 200,
             colorFilter: ColorFilter.mode(
-              const Color.fromARGB(255, 255, 255, 255), 
-              BlendMode.srcIn
-            ),
+                const Color.fromARGB(255, 255, 255, 255), BlendMode.srcIn),
           ),
         );
       },

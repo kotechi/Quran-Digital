@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home.dart';// Pastikan untuk mengganti dengan halaman utama yang sesuai
+import 'screens/home.dart'; // Pastikan untuk mengganti dengan halaman utama yang sesuai
 
 void main() {
   runApp(const QuranApp());
@@ -11,7 +11,7 @@ class QuranApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Al-Quran App',
+      title: 'QuranNow',
       theme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.black,
@@ -38,7 +38,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -47,10 +46,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Fungsi untuk berpindah ke halaman utama setelah delay
   Future<void> _navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3));  // Splash Screen selama 3 detik
+    await Future.delayed(Duration(seconds: 3)); // Splash Screen selama 3 detik
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LandingPage()),  // Gantilah dengan halaman utama aplikasi Anda
+      MaterialPageRoute(
+          builder: (context) =>
+              LandingPage()), // Gantilah dengan halaman utama aplikasi Anda
     );
   }
 
@@ -71,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             // Teks atau nama aplikasi
             Text(
-              'Al-Quran Digital',
+              "Qur'anNow'",
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
@@ -81,7 +82,8 @@ class _SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 20),
             // Menampilkan loading indicator
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)!),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  const Color.fromARGB(255, 255, 255, 255)!),
             ),
           ],
         ),
