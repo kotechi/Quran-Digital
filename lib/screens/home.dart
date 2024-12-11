@@ -163,7 +163,7 @@ class _LandingPageState extends State<LandingPage> {
         child: Column(
           children: [
             Text(
-              "Mohon izinkan akses lokasi untuk melihat arah Kiblat",
+              "Mohon izinkan akses lokasi",
               style: TextStyle(
                 color: Colors.purple.shade200,
                 fontWeight: FontWeight.w500,
