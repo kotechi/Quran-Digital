@@ -4,6 +4,7 @@ import 'package:myapp/screens/surah_list.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:myapp/permission_handler.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import 'dart:math' show pi;
 
@@ -20,20 +21,292 @@ class QuranApp extends StatelessWidget {
         brightness: Brightness.dark,
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black,
-          elevation: 0,
+        colorScheme: ColorScheme.dark(
+          primary: Colors.purple.shade200,
+          secondary: Colors.purple.shade700,
+          background: Colors.black,
+          surface: Colors.grey.shade900,
         ),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
+        textTheme: GoogleFonts.interTextTheme(
+          Typography.whiteMountainView.copyWith(
+            bodyLarge: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w300,
+            ),
+            headlineMedium: TextStyle(
+              color: Colors.purple.shade200,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
+          ),
         ),
+        useMaterial3: true,
       ),
       home: const LandingPage(),
     );
   }
 }
 
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
+
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  bool _isPermissionGranted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+  }
+
+  Future<void> _checkPermission() async {
+    bool isGranted = await LocationPermissionHandler.handleLocationPermission(context);
+
+    setState(() {
+      _isPermissionGranted = isGranted;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Header Section
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade900,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.purple.shade700,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.menu_book_rounded,
+                        size: 60,
+                        color: Colors.purple.shade200,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Al-Qur'an Digital",
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontSize: 28,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+                      style: TextStyle(
+                        color: Colors.purple.shade100,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 32),
+
+                // Qiblah Compass Section
+                _buildQiblahSection(context),
+
+                const SizedBox(height: 32),
+
+                // Navigation Buttons
+                _buildNavigationButtons(context),
+
+                const SizedBox(height: 32),
+
+                // Version Information
+                Text(
+                  'Version 1.0.0',
+                  style: TextStyle(
+                    color: Colors.purple.shade200.withOpacity(0.6),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQiblahSection(BuildContext context) {
+    if (!_isPermissionGranted) {
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade900,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.purple.shade700,
+            width: 1.5,
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(
+              "Mohon izinkan akses lokasi untuk melihat arah Kiblat",
+              style: TextStyle(
+                color: Colors.purple.shade200,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _checkPermission,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple.shade700,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
+              child: const Text(
+                "Izinkan Akses Lokasi",
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return FutureBuilder(
+      future: FlutterQiblah.androidDeviceSensorSupport(),
+      builder: (_, AsyncSnapshot<bool?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade200),
+          );
+        }
+        
+        if (snapshot.hasError || (snapshot.data != true)) {
+          return Text(
+            "Sensor tidak mendukung arah kiblat",
+            style: TextStyle(
+              color: Colors.purple.shade200,
+            ),
+          );
+        }
+
+        return Container(
+          width: 240,
+          height: 240,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey.shade900,
+            border: Border.all(
+              color: Colors.purple.shade700,
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.purple.shade900.withOpacity(0.3),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: const QiblahCompass(),
+        );
+      },
+    );
+  }
+
+  Widget _buildNavigationButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildNavButton(
+          context, 
+          icon: Icons.auto_stories,
+          label: 'Baca Surat',
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SurahListPage()),
+          ),
+        ),
+        const SizedBox(width: 16),
+        _buildNavButton(
+          context,
+          icon: Icons.volunteer_activism,
+          label: 'Baca Doa',
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DoaListPage()),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNavButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey.shade900,
+        foregroundColor: Colors.purple.shade200,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: Colors.purple.shade700,
+            width: 1.5,
+          ),
+        ),
+        elevation: 0,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon, 
+            size: 24, 
+            color: Colors.purple.shade200,
+          ),
+          const SizedBox(width: 10),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.purple.shade200,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// QiblahCompass widget remains mostly the same with styling updates
 class QiblahCompass extends StatefulWidget {
   const QiblahCompass({Key? key}) : super(key: key);
 
@@ -62,273 +335,37 @@ class _QiblahCompassState extends State<QiblahCompass> {
       stream: _streamController.stream,
       builder: (context, AsyncSnapshot<QiblahDirection> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade200),
+            )
+          );
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(
+            child: Text(
+              'Error: ${snapshot.error}', 
+              style: TextStyle(color: Colors.purple.shade200),
+            )
+          );
         }
 
         final qiblahDirection = snapshot.data!;
         
-        return Container(
-          width: 200,
-          height: 200,
-          child: Transform.rotate(
-            angle: (qiblahDirection.qiblah * (pi / 180) * -1),
-            child: SvgPicture.asset(
-              'assets/images/compass.svg',
-              width: 200,
-              height: 200,
+        return Transform.rotate(
+          angle: (qiblahDirection.qiblah * (pi / 180) * -1),
+          child: SvgPicture.asset(
+            'assets/images/compass.svg',
+            width: 200,
+            height: 200,
+            colorFilter: ColorFilter.mode(
+              Colors.purple.shade200, 
+              BlendMode.srcIn
             ),
           ),
         );
       },
-    );
-  }
-}
-
-class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
-
-  @override
-  State<LandingPage> createState() => _LandingPageState();
-}
-class _LandingPageState extends State<LandingPage> {
-  bool _isPermissionGranted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkPermission();
-  }
-
-  Future<void> _checkPermission() async {
-    // Periksa status permission
-    bool isGranted = await LocationPermissionHandler.handleLocationPermission(context);
-
-    // Jika granted, perbarui state
-    setState(() {
-      _isPermissionGranted = isGranted;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.black,
-              Colors.purple,
-              Colors.black,
-            ],
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Logo atau ikon
-              Icon(
-                Icons.menu_book_rounded,
-                size: 100,
-                color: Colors.purple[200],
-              ),
-              SizedBox(height: 20),
-
-              // Judul
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Al-Qur'an Digital\n",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple[200],
-                        letterSpacing: 1.5,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple[100],
-                        height: 2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30),
-
-              // Kompas atau status permission
-              if (_isPermissionGranted)
-                FutureBuilder(
-                  future: FlutterQiblah.androidDeviceSensorSupport(),
-                  builder: (_, AsyncSnapshot<bool?> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(
-                        color: Colors.purple[200],
-                      );
-                    }
-                    if (snapshot.hasError || (snapshot.data != true)) {
-                      return Text(
-                        "Sensor tidak mendukung arah kiblat",
-                        style: TextStyle(color: Colors.purple[200]),
-                      );
-                    }
-                    return Container(
-                      width: 200,
-                      height: 200,
-                      margin: const EdgeInsets.only(bottom: 30),
-                      decoration: BoxDecoration(
-                        color: Colors.purple[700],
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            spreadRadius: 5,
-                          ),
-                        ],
-                      ),
-                      child: const QiblahCompass(),
-                    );
-                  },
-                )
-              else
-                Column(
-                  children: [
-                    Text(
-                      "Mohon izinkan akses lokasi untuk melihat arah Kiblat",
-                      style: TextStyle(color: Colors.purple[200]),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _checkPermission,
-                      child: Text("Izinkan Akses Lokasi"),
-                    ),
-                  ],
-                ),
-              SizedBox(height: 30),
-
-              // Tombol Baca Surat dan Baca Doa
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Tombol Baca Surat
-                    SizedBox(
-                      width: 150,
-                      height: 60,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SurahListPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.purple[700],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 5,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.auto_stories,
-                              color: Colors.purple[100],
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Baca Surat',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple[100],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    // Tombol Baca Doa
-                    SizedBox(
-                      width: 150,
-                      height: 60,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DoaListPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 112, 20, 140),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          elevation: 5,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.volunteer_activism,
-                              color: Colors.purple[100],
-                              size: 24,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Baca Doa',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple[100],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Informasi versi atau pengembang
-              Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: Text(
-                  'Version 1.0.0',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.purple[200]?.withOpacity(0.7),
-                    fontSize: 12,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
