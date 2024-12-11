@@ -9,7 +9,7 @@
 
 
     <application
-        android:label="Qur'an digital"
+        android:label="Qur'anNow"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
