@@ -18,16 +18,16 @@ class QuranApp extends StatelessWidget {
     return MaterialApp(
       title: 'Al-Quran App',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.black,
-        scaffoldBackgroundColor: Colors.black,
+        brightness: Brightness.light,
+        primaryColor: Colors.blueGrey.shade50,
+        scaffoldBackgroundColor: Colors.blueGrey.shade100,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blueGrey.shade50,
           elevation: 0,
         ),
         textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
+          bodyLarge: TextStyle(color: Colors.blueGrey.shade900),
+          bodyMedium: TextStyle(color: Colors.blueGrey.shade900),
         ),
       ),
       home: SurahListPage(),
@@ -62,32 +62,32 @@ class _SurahListPageState extends State<SurahListPage> {
       errorMessage = '';
     });
 
-  try {
-    final String jsonString = await rootBundle.loadString('assets/quran_data.json');
-    final Map<String, dynamic> data = json.decode(jsonString);
+    try {
+      final String jsonString =
+          await rootBundle.loadString('assets/quran_data.json');
+      final Map<String, dynamic> data = json.decode(jsonString);
 
-    if (data['data'] != null) {
+      if (data['data'] != null) {
+        setState(() {
+          surahs = (data['data'] as List)
+              .map((surahJson) => Surah.fromJson(surahJson))
+              .toList();
+          filteredSurahs = surahs; // Initially, all surahs are shown
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+          errorMessage = 'Tidak ada data surah yang ditemukan';
+        });
+      }
+    } catch (e) {
       setState(() {
-        surahs = (data['data'] as List)
-            .map((surahJson) => Surah.fromJson(surahJson))
-            .toList();
-        filteredSurahs = surahs; // Initially, all surahs are shown
         isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-        errorMessage = 'Tidak ada data surah yang ditemukan';
+        errorMessage = 'Terjadi kesalahan: $e';
       });
     }
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-      errorMessage = 'Terjadi kesalahan: $e';
-    });
   }
-}
-
 
   void _filterSurahs(String query) {
     setState(() {
@@ -96,9 +96,9 @@ class _SurahListPageState extends State<SurahListPage> {
         // Enhanced search with multiple criteria
         final lowercaseQuery = query.toLowerCase();
         return surah.longName.toLowerCase().contains(lowercaseQuery) ||
-               surah.transliterationId.toLowerCase().contains(lowercaseQuery) ||
-               surah.number.toString().contains(lowercaseQuery) ||
-               surah.arabicName.toLowerCase().contains(lowercaseQuery);
+            surah.transliterationId.toLowerCase().contains(lowercaseQuery) ||
+            surah.number.toString().contains(lowercaseQuery) ||
+            surah.arabicName.toLowerCase().contains(lowercaseQuery);
       }).toList();
     });
   }
@@ -120,7 +120,7 @@ class _SurahListPageState extends State<SurahListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 19, 19, 20),
       appBar: AppBar(
         title: RichText(
           textAlign: TextAlign.center,
@@ -129,16 +129,16 @@ class _SurahListPageState extends State<SurahListPage> {
               TextSpan(
                 text: "Al-Qur'an digital\n",
                 style: TextStyle(
-                  color: Colors.purple[200], 
+                  color: Colors.blueGrey.shade900,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                   fontSize: 18,
                 ),
               ),
               TextSpan(
-                text: "Mobile",
+                text: "List Surat",
                 style: TextStyle(
-                  color: Colors.purple[200], 
+                  color: Colors.blueGrey.shade700,
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
                 ),
@@ -147,11 +147,12 @@ class _SurahListPageState extends State<SurahListPage> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey.shade50,
+        iconTheme: IconThemeData(color: Colors.blueGrey.shade900),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
-            color: Colors.purple[700],
+            color: Colors.blueGrey.shade200,
             height: 1.5,
           ),
         ),
@@ -163,156 +164,136 @@ class _SurahListPageState extends State<SurahListPage> {
             padding: const EdgeInsets.all(10.0),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+              style: TextStyle(color: Colors.blueGrey.shade900, fontWeight: FontWeight.w300),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey[900],
+                fillColor: Colors.blueGrey.shade50,
                 hintText: 'Cari Surat...',
-                hintStyle: TextStyle(color: Colors.purple[200]?.withOpacity(0.7)),
-                prefixIcon: Icon(Icons.search, color: Colors.purple[200]),
+                hintStyle: TextStyle(color: Colors.blueGrey.shade400),
+                prefixIcon: Icon(Icons.search, color: Colors.blueGrey.shade600),
                 suffixIcon: _isSearching
-                  ? IconButton(
-                      icon: Icon(Icons.clear, color: Colors.purple[200]),
-                      onPressed: _clearSearch,
-                    )
-                  : null,
+                    ? IconButton(
+                        icon: Icon(Icons.clear, color: Colors.blueGrey.shade600),
+                        onPressed: _clearSearch,
+                      )
+                    : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.purple[200]!, width: 1.5),
+                  borderSide: BorderSide(color: Colors.blueGrey.shade300, width: 1.5),
                 ),
               ),
               onChanged: _filterSurahs,
             ),
           ),
-          
+
           // Surah List
-  Expanded(
-    child: isLoading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[200]!),
-            ),
-          )
-        : errorMessage.isNotEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 50,
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      errorMessage,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: fetchSurahs,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.purple[700],
-                      ),
-                      child: Text('Coba Lagi'),
-                    ),
-                  ],
-                ),
-              )
-            : filteredSurahs.isEmpty
+          Expanded(
+            child: isLoading
                 ? Center(
-                    child: Text(
-                      'Tidak ada surah ditemukan',
-                      style: TextStyle(
-                        color: Colors.purple[200],
-                        fontSize: 16,
-                      ),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey.shade300),
                     ),
                   )
-                : ListView.builder(
-                    itemCount: filteredSurahs.length,
-                    itemBuilder: (context, index) {
-                      final surah = filteredSurahs[index];
-                      return Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[900],
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: Colors.purple[700]!.withOpacity(0.3),
-                            width: 1,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.purple[900]!.withOpacity(0.2),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
+                : errorMessage.isNotEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              errorMessage,
+                              style: TextStyle(color: Colors.blueGrey.shade900),
+                            ),
+                            SizedBox(height: 10),
+                            ElevatedButton(
+                              onPressed: fetchSurahs,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey.shade200,
+                              ),
+                              child: Text('Coba Lagi', style: TextStyle(color: Colors.blueGrey.shade900)),
                             ),
                           ],
                         ),
-                        child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.purple[700],
+                      )
+                    : filteredSurahs.isEmpty
+                        ? Center(
                             child: Text(
-                              '${surah.number}',
+                              'Tidak ada surah ditemukan',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                color: Colors.blueGrey.shade900,
+                                fontSize: 16,
                               ),
                             ),
+                          )
+                        : ListView.builder(
+                            itemCount: filteredSurahs.length,
+                            itemBuilder: (context, index) {
+                              final surah = filteredSurahs[index];
+                              return Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey.shade50,
+                                  borderRadius: BorderRadius.circular(15),
+                                  border: Border.all(
+                                    color: Colors.blueGrey.shade200,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.blueGrey.shade200,
+                                    child: Text(
+                                      '${surah.number}',
+                                      style: TextStyle(
+                                        color: Colors.blueGrey.shade900,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    surah.transliterationId,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blueGrey.shade900,
+                                    ),
+                                  ),
+                                  subtitle: Text(
+                                    '${surah.translationId} - ${surah.totalVerses} ayat',
+                                    style: TextStyle(
+                                      color: Colors.blueGrey.shade700,
+                                    ),
+                                  ),
+                                  trailing: Text(
+                                    surah.arabicName,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.blueGrey.shade900,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SurahDetail(surah: surah),
+                                        ));
+                                  },
+                                ),
+                              );
+                            },
                           ),
-                          title: Text(
-                            surah.transliterationId,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.purple[200],
-                            ),
-                          ),
-                          subtitle: Text(
-                            '${surah.translationId} - ${surah.totalVerses} ayat',
-                            style: TextStyle(
-                              color: Colors.purple[100],
-                            ),
-                          ),
-                          trailing: Text(
-                            surah.arabicName,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SurahDetail(surah: surah),
-                              )
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-  )
-
+          )
         ],
       ),
     );

@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 19, 19, 20),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(
               Icons.menu_book_rounded,
               size: 100,
-              color: Colors.purple[200],
+              color: const Color.fromARGB(255, 255, 255, 255),
             ),
             SizedBox(height: 20),
             // Teks atau nama aplikasi
@@ -75,13 +75,13 @@ class _SplashScreenState extends State<SplashScreen> {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.purple[200],
+                color: const Color.fromARGB(255, 255, 255, 255),
               ),
             ),
             SizedBox(height: 20),
             // Menampilkan loading indicator
             CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[200]!),
+              valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)!),
             ),
           ],
         ),

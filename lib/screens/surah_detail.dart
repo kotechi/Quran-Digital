@@ -366,26 +366,21 @@ Future<void> saveFavorites() async {
     }
   }
 
-  Widget buildVerseTile(int index, Map<String, dynamic> verse) {
+
+ Widget buildVerseTile(int index, Map<String, dynamic> verse) {
     final isCurrentVerse = currentPlayingVerse == index && isPlaying;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: isCurrentVerse ? Colors.purple.withOpacity(0.2) : Colors.grey[900],
+        color: isCurrentVerse 
+          ? Colors.blueGrey.shade100.withOpacity(0.3) 
+          : Colors.blueGrey.shade50,
         borderRadius: BorderRadius.circular(15),
         border: Border.all(
-          color: Colors.purple[700]!.withOpacity(0.3),
+          color: Colors.blueGrey.shade200,
           width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.purple[900]!.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -401,8 +396,8 @@ Future<void> saveFavorites() async {
                         ? Icons.favorite
                         : Icons.favorite_border,
                     color: favoriteVerses.contains(index)
-                        ? Colors.purple[700]
-                        : Colors.grey,
+                        ? Colors.red.shade300
+                        : Colors.blueGrey.shade400,
                   ),
                   onPressed: () => toggleFavorite(index),
                 ),
@@ -410,7 +405,9 @@ Future<void> saveFavorites() async {
                   'Ayat ${verse['number']['inSurah']}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: isCurrentVerse ? Colors.white : Colors.purple[300],
+                    color: isCurrentVerse 
+                      ? Colors.blueGrey.shade700 
+                      : Colors.blueGrey.shade600,
                   ),
                 ),
               ],
@@ -422,7 +419,7 @@ Future<void> saveFavorites() async {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.purple[200],
+                color: Colors.blueGrey.shade900,
               ),
             ),
             SizedBox(height: 10),
@@ -431,7 +428,7 @@ Future<void> saveFavorites() async {
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.purple[200],
+                color: Colors.blueGrey.shade700,
               ),
             ),
             SizedBox(height: 15),
@@ -441,7 +438,7 @@ Future<void> saveFavorites() async {
               style: TextStyle(
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
-                color: Colors.purple[100],
+                color: Colors.blueGrey.shade600,
               ),
             ),
           ],
@@ -453,17 +450,18 @@ Future<void> saveFavorites() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 19, 19, 20), // Soft grey background
       appBar: AppBar(
         title: Text(
           '${widget.surah.transliterationId} (${widget.surah.arabicName})',
           style: TextStyle(
-            color: Colors.purple[200],
+            color: Colors.blueGrey.shade900,
             fontWeight: FontWeight.bold,
           ),
         ),
+        iconTheme: IconThemeData(color: Colors.blueGrey.shade900),
         actions: [
-          if (!kIsWeb) // Cek apakah bukan platform web
+          if (!kIsWeb)
             IconButton(
               icon: Icon(
                 isDownloaded
@@ -471,31 +469,32 @@ Future<void> saveFavorites() async {
                     : isDownloading
                         ? Icons.downloading
                         : Icons.download,
-                color: Colors.purple[200],
+                color: Colors.black87,
               ),
               onPressed: isDownloading ? null : () => showDownloadOptionsDialog(),
             ),
-          // Tombol play/pause dan tafsir tetap ada
           IconButton(
             icon: Icon(
               isPlaying ? Icons.pause_circle : Icons.play_circle,
-              color: Colors.purple[200],
+              color: Colors.black87,
             ),
             onPressed: togglePlayAll,
           ),
           IconButton(
             icon: Icon(
               Icons.book,
-              color: Colors.purple[200],
+              color: Colors.black87,
             ),
             onPressed: () => showTafsirDialog(),
           ),
         ],
-        backgroundColor: Colors.black,
+
+        backgroundColor: Colors.blueGrey.shade50, // Light grey app bar
+        elevation: 1,
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
-            color: Colors.purple[700],
+            color: Colors.blueGrey.shade200,
             height: 1.5,
           ),
         ),
@@ -503,14 +502,14 @@ Future<void> saveFavorites() async {
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[200]!),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey.shade300),
               ),
             )
           : errorMessage.isNotEmpty
               ? Center(
                   child: Text(
                     errorMessage,
-                    style: TextStyle(color: Colors.red, fontSize: 16),
+                    style: TextStyle(color: Colors.red.shade300, fontSize: 16),
                   ),
                 )
               : ListView.builder(
@@ -664,7 +663,7 @@ Future<void> saveFavorites() async {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -677,8 +676,8 @@ Future<void> saveFavorites() async {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  const Color.fromARGB(255, 36, 9, 49),
-                  const Color.fromARGB(255, 35, 33, 36)
+                  Colors.white,
+                  Colors.grey[100]!
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -693,7 +692,7 @@ Future<void> saveFavorites() async {
                   Text(
                     'Tafsir Surat ${widget.surah.transliterationId}',
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 233, 195, 225),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
@@ -702,13 +701,13 @@ Future<void> saveFavorites() async {
                   Text(
                     widget.surah.tafsirId,
                     style: TextStyle(
-                      color: const Color.fromARGB(255, 188, 166, 194),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       fontSize: 16,
                       fontStyle: FontStyle.italic,
                     ),
                     textAlign: TextAlign.justify,
                   ),
-SizedBox(height: 20),
+                  SizedBox(height: 20),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
@@ -716,7 +715,7 @@ SizedBox(height: 20),
                         Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[900],
+                        backgroundColor: Colors.grey[200],
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -725,7 +724,7 @@ SizedBox(height: 20),
                       child: Text(
                         'Tutup',
                         style: TextStyle(
-                          color: const Color.fromARGB(255, 161, 25, 199),
+                          color: Colors.black87,
                           fontSize: 16,
                         ),
                       ),
@@ -738,5 +737,4 @@ SizedBox(height: 20),
         );
       },
     );
-  }
-}
+  }}

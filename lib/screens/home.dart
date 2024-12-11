@@ -22,8 +22,8 @@ class QuranApp extends StatelessWidget {
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
         colorScheme: ColorScheme.dark(
-          primary: Colors.purple.shade200,
-          secondary: Colors.purple.shade700,
+          primary: const Color.fromARGB(255, 255, 255, 255),
+          secondary: const Color.fromARGB(255, 255, 255, 255),
           background: Colors.black,
           surface: Colors.grey.shade900,
         ),
@@ -34,7 +34,7 @@ class QuranApp extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
             headlineMedium: TextStyle(
-              color: Colors.purple.shade200,
+              color: const Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.bold,
               letterSpacing: 1.2,
             ),
@@ -74,7 +74,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 19, 19, 20),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -91,14 +91,14 @@ class _LandingPageState extends State<LandingPage> {
                         color: Colors.grey.shade900,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.purple.shade700,
+                          color: const Color.fromARGB(255, 255, 255, 255),
                           width: 1.5,
                         ),
                       ),
                       child: Icon(
                         Icons.menu_book_rounded,
                         size: 60,
-                        color: Colors.purple.shade200,
+                        color: const Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -113,7 +113,7 @@ class _LandingPageState extends State<LandingPage> {
                     Text(
                       "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
                       style: TextStyle(
-                        color: Colors.purple.shade100,
+                        color: const Color.fromARGB(255, 255, 255, 255),
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -134,9 +134,32 @@ class _LandingPageState extends State<LandingPage> {
 
                 // Version Information
                 Text(
+                  'Powered by :',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    fontSize: 15,
+                  ),
+                ),
+
+                                Text(
+                  'Pengembangan Perangkat Lunak & Gim',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    fontSize: 15,
+                  ),
+                ),
+                                Text(
+                  'SMKN 1 Ciomas',
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                    fontSize: 15,
+                  ),
+                ),
+
+                Text(
                   'Version 1.0.0',
                   style: TextStyle(
-                    color: Colors.purple.shade200.withOpacity(0.6),
+                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
                     fontSize: 12,
                   ),
                 ),
@@ -156,7 +179,7 @@ class _LandingPageState extends State<LandingPage> {
           color: Colors.grey.shade900,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Colors.purple.shade700,
+            color: const Color.fromARGB(255, 255, 255, 255),
             width: 1.5,
           ),
         ),
@@ -165,7 +188,7 @@ class _LandingPageState extends State<LandingPage> {
             Text(
               "Mohon izinkan akses lokasi",
               style: TextStyle(
-                color: Colors.purple.shade200,
+                color: const Color.fromARGB(255, 255, 255, 255),
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
@@ -174,8 +197,8 @@ class _LandingPageState extends State<LandingPage> {
             ElevatedButton(
               onPressed: _checkPermission,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple.shade700,
-                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -197,7 +220,7 @@ class _LandingPageState extends State<LandingPage> {
       builder: (_, AsyncSnapshot<bool?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade200),
+            valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)),
           );
         }
         
@@ -205,7 +228,7 @@ class _LandingPageState extends State<LandingPage> {
           return Text(
             "Sensor tidak mendukung arah kiblat",
             style: TextStyle(
-              color: Colors.purple.shade200,
+              color: const Color.fromARGB(255, 0, 0, 0),
             ),
           );
         }
@@ -217,12 +240,12 @@ class _LandingPageState extends State<LandingPage> {
             shape: BoxShape.circle,
             color: Colors.grey.shade900,
             border: Border.all(
-              color: Colors.purple.shade700,
+              color: const Color.fromARGB(127, 255, 255, 255),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.purple.shade900.withOpacity(0.3),
+                color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.3),
                 blurRadius: 20,
                 spreadRadius: 2,
                 offset: const Offset(0, 6),
@@ -272,12 +295,12 @@ class _LandingPageState extends State<LandingPage> {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey.shade900,
-        foregroundColor: Colors.purple.shade200,
+        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
           side: BorderSide(
-            color: Colors.purple.shade700,
+            color: const Color.fromARGB(255, 255, 255, 255),
             width: 1.5,
           ),
         ),
@@ -289,14 +312,14 @@ class _LandingPageState extends State<LandingPage> {
           Icon(
             icon, 
             size: 24, 
-            color: Colors.purple.shade200,
+            color: const Color.fromARGB(255, 255, 255, 255),
           ),
           const SizedBox(width: 10),
           Text(
             label,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: Colors.purple.shade200,
+              color: const Color.fromARGB(255, 255, 255, 255),
               letterSpacing: 0.5,
             ),
           ),
@@ -337,7 +360,7 @@ class _QiblahCompassState extends State<QiblahCompass> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple.shade200),
+              valueColor: AlwaysStoppedAnimation<Color>(const Color.fromARGB(255, 255, 255, 255)),
             )
           );
         }
@@ -346,7 +369,7 @@ class _QiblahCompassState extends State<QiblahCompass> {
           return Center(
             child: Text(
               'Error: ${snapshot.error}', 
-              style: TextStyle(color: Colors.purple.shade200),
+              style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
             )
           );
         }
@@ -360,7 +383,7 @@ class _QiblahCompassState extends State<QiblahCompass> {
             width: 200,
             height: 200,
             colorFilter: ColorFilter.mode(
-              Colors.purple.shade200, 
+              const Color.fromARGB(255, 255, 255, 255), 
               BlendMode.srcIn
             ),
           ),

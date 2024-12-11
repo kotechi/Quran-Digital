@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:myapp/models/doa.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
 class DoaListPage extends StatefulWidget {
   const DoaListPage({super.key});
 
@@ -71,10 +72,10 @@ Future<void> fetchDuas() async {
     });
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 19, 19, 20), // Soft grey background
       appBar: AppBar(
         title: RichText(
           textAlign: TextAlign.center,
@@ -83,7 +84,7 @@ Future<void> fetchDuas() async {
               TextSpan(
                 text: "Kumpulan Doa\n",
                 style: TextStyle(
-                  color: Colors.purple[200],
+                  color: Colors.blueGrey.shade900,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                   fontSize: 18,
@@ -92,7 +93,7 @@ Future<void> fetchDuas() async {
               TextSpan(
                 text: "mobile",
                 style: TextStyle(
-                  color: Colors.purple[200],
+                  color: Colors.blueGrey.shade700,
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
                 ),
@@ -101,32 +102,33 @@ Future<void> fetchDuas() async {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey.shade50, // Light grey app bar
+        iconTheme: IconThemeData(color: Colors.blueGrey.shade900),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
-            color: Colors.purple[700],
+            color: Colors.blueGrey.shade200,
             height: 1.5,
           ),
         ),
       ),
       body: Column(
         children: [
-          // Pencarian
+          // Search
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
               controller: _searchController,
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+              style: TextStyle(color: Colors.blueGrey.shade900, fontWeight: FontWeight.w300),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.grey[900],
+                fillColor: Colors.blueGrey.shade50,
                 hintText: 'Cari Doa...',
-                hintStyle: TextStyle(color: Colors.purple[200]?.withOpacity(0.7)),
-                prefixIcon: Icon(Icons.search, color: Colors.purple[200]),
+                hintStyle: TextStyle(color: Colors.blueGrey.shade400),
+                prefixIcon: Icon(Icons.search, color: Colors.blueGrey.shade600),
                 suffixIcon: _isSearching
                     ? IconButton(
-                        icon: Icon(Icons.clear, color: Colors.purple[200]),
+                        icon: Icon(Icons.clear, color: Colors.blueGrey.shade600),
                         onPressed: _clearSearch,
                       )
                     : null,
@@ -136,27 +138,27 @@ Future<void> fetchDuas() async {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide(color: Colors.purple[200]!, width: 1.5),
+                  borderSide: BorderSide(color: Colors.blueGrey.shade300, width: 1.5),
                 ),
               ),
               onChanged: _filterDuas,
             ),
           ),
-          // Error message jika ada
+          // Error message
           if (errorMessage.isNotEmpty)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 errorMessage,
-                style: TextStyle(color: Colors.red[300]),
+                style: TextStyle(color: Colors.red.shade300),
               ),
             ),
-          // Konten utama
+          // Main Content
           Expanded(
             child: isLoading
                 ? Center(
                     child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.purple[200]!),
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blueGrey.shade300),
                     ),
                   )
                 : filteredDuas.isEmpty
@@ -164,7 +166,7 @@ Future<void> fetchDuas() async {
                         child: Text(
                           'Tidak ada doa ditemukan',
                           style: TextStyle(
-                            color: Colors.purple[200],
+                            color: Colors.blueGrey.shade900,
                             fontSize: 16,
                           ),
                         ),
@@ -176,26 +178,18 @@ Future<void> fetchDuas() async {
                           return Container(
                             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: Colors.grey[900],
+                              color: Colors.blueGrey.shade50,
                               borderRadius: BorderRadius.circular(15),
                               border: Border.all(
-                                color: Colors.purple[700]!.withOpacity(0.3),
+                                color: Colors.blueGrey.shade200,
                                 width: 1,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.purple[900]!.withOpacity(0.2),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
                             ),
                             child: ExpansionTile(
                               title: Text(
                                 dua.doa,
                                 style: TextStyle(
-                                  color: Colors.purple[200],
+                                  color: Colors.blueGrey.shade900,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -209,7 +203,7 @@ Future<void> fetchDuas() async {
                                         dua.ayat,
                                         style: TextStyle(
                                           fontSize: 20,
-                                          color: Colors.white,
+                                          color: Colors.blueGrey.shade900,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         textAlign: TextAlign.right,
@@ -218,14 +212,14 @@ Future<void> fetchDuas() async {
                                       Text(
                                         dua.latin,
                                         style: TextStyle(
-                                          color: Colors.purple[100],
+                                          color: Colors.blueGrey.shade700,
                                         ),
                                       ),
                                       SizedBox(height: 5),
                                       Text(
                                         dua.artinya,
                                         style: TextStyle(
-                                          color: Colors.purple[200],
+                                          color: Colors.blueGrey.shade600,
                                           fontSize: 12,
                                           fontStyle: FontStyle.italic,
                                         ),
