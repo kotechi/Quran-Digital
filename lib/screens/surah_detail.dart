@@ -367,90 +367,108 @@ Future<void> saveFavorites() async {
   }
 
 
- Widget buildVerseTile(int index, Map<String, dynamic> verse) {
-    final isCurrentVerse = currentPlayingVerse == index && isPlaying;
+Widget buildVerseTile(int index, Map<String, dynamic> verse) {
+  final isCurrentVerse = currentPlayingVerse == index && isPlaying;
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    decoration: BoxDecoration(
+      color: isCurrentVerse 
+        ? Colors.blueGrey.shade100  // Lighter blueGrey highlight instead of blue
+        : Colors.blueGrey.shade50,
+      borderRadius: BorderRadius.circular(15),
+      border: Border.all(
         color: isCurrentVerse 
-          ? Colors.blueGrey.shade100.withOpacity(0.3) 
-          : Colors.blueGrey.shade50,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: Colors.blueGrey.shade200,
-          width: 1,
-        ),
+          ? Colors.blueGrey.shade300  // BlueGrey border when playing
+          : Colors.blueGrey.shade200,
+        width: 1.5,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    favoriteVerses.contains(index)
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: favoriteVerses.contains(index)
-                        ? Colors.red.shade300
-                        : Colors.blueGrey.shade400,
-                  ),
-                  onPressed: () => toggleFavorite(index),
+      boxShadow: isCurrentVerse
+        ? [
+            BoxShadow(
+              color: Colors.blueGrey.shade200.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            )
+          ]
+        : [],
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(
+                  favoriteVerses.contains(index)
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color: favoriteVerses.contains(index)
+                      ? Colors.red.shade300
+                      : Colors.blueGrey.shade400,
                 ),
-                Text(
-                  'Ayat ${verse['number']['inSurah']}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isCurrentVerse 
-                      ? Colors.blueGrey.shade700 
-                      : Colors.blueGrey.shade600,
-                  ),
+                onPressed: () => toggleFavorite(index),
+              ),
+              Text(
+                'Ayat ${verse['number']['inSurah']}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: isCurrentVerse 
+                    ? Colors.blueGrey.shade800  // Darker blueGrey text when playing
+                    : Colors.blueGrey.shade600,
+                  fontWeight: isCurrentVerse ? FontWeight.bold : FontWeight.normal,
                 ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text(
-              verse['text']['arab'] ?? '',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueGrey.shade900,
               ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Text(
+            verse['text']['arab'] ?? '',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: isCurrentVerse 
+                ? Colors.blueGrey.shade900  // Darker blueGrey for playing verse
+                : Colors.blueGrey.shade900,
             ),
-            SizedBox(height: 10),
-            Text(
-              verse['text']['transliteration']['en'] ?? 'Tidak ada transliterasi',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.blueGrey.shade700,
-              ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            verse['text']['transliteration']['en'] ?? 'Tidak ada transliterasi',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontSize: 16,
+              color: isCurrentVerse 
+                ? Colors.blueGrey.shade800  // Darker blueGrey text when playing
+                : Colors.blueGrey.shade700,
             ),
-            SizedBox(height: 15),
-            Text(
-              verse['translation']['id'] ?? '',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                fontSize: 16,
-                fontStyle: FontStyle.italic,
-                color: Colors.blueGrey.shade600,
-              ),
+          ),
+          SizedBox(height: 15),
+          Text(
+            verse['translation']['id'] ?? '',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              fontSize: 16,
+              fontStyle: FontStyle.italic,
+              color: isCurrentVerse 
+                ? Colors.blueGrey.shade700  // Darker blueGrey text when playing
+                : Colors.blueGrey.shade600,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
-
+    ),
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 19, 19, 20), // Soft grey background
+      backgroundColor: const Color.fromARGB(162, 163, 163, 168), // Soft grey background
       appBar: AppBar(
         title: Text(
           '${widget.surah.transliterationId} (${widget.surah.arabicName})',
